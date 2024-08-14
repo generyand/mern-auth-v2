@@ -1,32 +1,31 @@
-import MailtrapClient from "mailtrap";
+import { MailtrapClient } from "mailtrap";
+import { fileURLToPath } from "url";
+import path from "path";
 import dotenv from "dotenv";
 
-dotenv.config();
+/**
+ * For this example to work, you need to set up a sending domain,
+ * and obtain a token that is authorized to send from the domain.
+ */
+const __dirname = fileURLToPath(new URL(".", import.meta.url));
+const envPath = path.resolve(__dirname, "../../.env");
+dotenv.config({ path: envPath });
 
 const TOKEN = process.env.MAILTRAP_TOKEN;
-const ENDPOINT = process.env.MAILTRAP_ENDPOINT;
-const test = process.env.PORT;
+const SENDER_EMAIL = "mailtrap@demomailtrap.com";
+// const RECIPIENT_EMAIL = "kiedajhinn@gmail.com"; // This commented out for now because it should be dynamic
 
-console.log(test, TOKEN, ENDPOINT);
+export const mailtrapClient = new MailtrapClient({ token: TOKEN });
 
-const client = new MailtrapClient({ endpoint: ENDPOINT, token: TOKEN });
+export const sender = { name: "Kieda Jhinn", email: SENDER_EMAIL };
 
-const sender = {
-  email: "mailtrap@demomailtrap.com",
-  name: "Kieda Jhinn",
-};
-const recipients = [
-  {
-    email: "kiedajhinn@gmail.com",
-  },
-];
-
-client
-  .send({
-    from: sender,
-    to: recipients,
-    subject: "You are awesome!",
-    text: "Congrats for sending test email with Mailtrap!",
-    category: "Integration Test",
-  })
-  .then(console.log, console.error);
+/* Commented out for now because this should be handled in the controller */
+// client
+//   .send({
+//     from: sender,
+//     to: [{ email: RECIPIENT_EMAIL }],
+//     subject: "Test 2",
+//     text: "Wassup yowwwww! This a test from Mailtrap.",
+//   })
+//   .then(console.log)
+//   .catch(console.error);
