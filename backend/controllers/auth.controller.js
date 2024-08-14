@@ -74,7 +74,11 @@ export const verifyEmail = async (req, res) => {
     await user.save();
 
     await sendWelcomeEmail(user.email, user.name);
-  } catch (error) {}
+
+    res.status(200).json({ success: true, message: "Email verified" });
+  } catch (error) {
+    res.status(400).json({ success: false, message: error.message });
+  }
 };
 
 export const login = async (req, res) => {
