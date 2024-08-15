@@ -32,7 +32,7 @@ export const sendWelcomeEmail = async (email, name) => {
     const response = await mailtrapClient.send({
       from: sender,
       to: recipient,
-      subject: `Welcome ${name}`,
+      // subject: `Welcome ${name}`,
       template_uuid: "2214bd1a-f648-4073-8b3a-8c4da95ed022",
       template_variables: {
         company_info_name: "PGITS",
