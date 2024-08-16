@@ -169,6 +169,7 @@ export const forgotPassword = async (req, res) => {
       `${process.env.CLIENT_URL}/reset-password/${resetToken}`
     );
 
+    console.log("hakdog");
     res.status(200).json({
       success: true,
       message: "Password reset email sent successfully",
@@ -213,6 +214,26 @@ export const resetPassword = async (req, res) => {
     });
   } catch (error) {
     console.log("Error in resetPaswsword ", error);
+    res.status(400).json({ success: false, message: error.message });
+  }
+};
+
+export const checkAuth = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId).select("-password");
+
+    if (!user) {
+      return res
+        .status(400)
+        .json({ success: false, message: "User not found" });
+    }
+
+    res.status(200).json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    console.log("Error in checkAuth ", error);
     res.status(400).json({ success: false, message: error.message });
   }
 };
